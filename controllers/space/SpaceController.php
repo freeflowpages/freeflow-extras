@@ -40,19 +40,22 @@ class SpaceController extends Controller
         }
 
         $user = Yii::$app->user;
-        $space = Space::findOne(['name' => $space]);
+	$space_name = $space;
+	$space =  Space::findOne(['name' => str_replace("-","_",$space)]);
 
         if ($space === null) {
                 throw new \yii\web\HttpException(404, "Space not found!");
         }
 
-        if ($space -> join_policy != 2){
-                throw new \yii\web\HttpException(403, "Space policy does not allow public join! Please contact Space admin!");
-        }
 
         $membership = Membership::findOne(['space_id' => $space -> id, 'user_id' => $user -> id]);
                 if ($membership === null){
-                    $membership = new Membership();
+    
+	     	    if ($space -> join_policy != 2){
+                	throw new \yii\web\HttpException(403, "Space policy does not allow public join! Please contact Space admin!");
+		    }
+
+	            $membership = new Membership();
                     $membership -> space_id = $space -> id;
                     $membership -> user_id = $user -> id;
                     $membership -> status = Membership::STATUS_MEMBER;
@@ -63,7 +66,7 @@ class SpaceController extends Controller
                 }
 
 
-        $this->redirect(Yii::$app->urlManager->createAbsoluteUrl(['/s/' .  $space -> name]));
+        $this->redirect(Yii::$app->urlManager->createAbsoluteUrl(['/s/' .  $space_name]));
 
     }
 }
