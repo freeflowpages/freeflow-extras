@@ -18,7 +18,7 @@ class Events
 
         Yii::$app->urlManager->addRules([
 
-		['pattern' => 'join/<space:[0-9a-zA-Z\-]+>', 'route' => 'freeflow_extras/space/space/join', 'verb' => ['GET', 'HEAD']],
+		['pattern' => 'join/<space_url:[0-9a-zA-Z\-]+>', 'route' => 'freeflow_extras/space/space/join', 'verb' => ['GET', 'HEAD']],
 
         ], true);
     }

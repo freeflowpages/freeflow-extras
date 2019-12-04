@@ -31,7 +31,7 @@ use yii\helpers\Json;
 class SpaceController extends Controller
 {
 
-    public function actionJoin($space)
+    public function actionJoin($space_url)
     {
 	    // Guest
         if(Yii::$app->user->isGuest){
@@ -40,8 +40,7 @@ class SpaceController extends Controller
         }
 
         $user = Yii::$app->user;
-	$space_name = $space;
-	$space =  Space::findOne(['name' => str_replace("-","_",$space)]);
+	$space =  Space::findOne(['url' => $space_url]);
 
         if ($space === null) {
                 throw new \yii\web\HttpException(404, "Space not found!");
@@ -66,7 +65,7 @@ class SpaceController extends Controller
                 }
 
 
-        $this->redirect(Yii::$app->urlManager->createAbsoluteUrl(['/s/' .  $space_name]));
+        $this->redirect(Yii::$app->urlManager->createAbsoluteUrl(['/s/' .  $space_url]));
 
     }
 }
